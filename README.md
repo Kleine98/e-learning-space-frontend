@@ -1,4 +1,4 @@
-This website was created with MERN Stack using Vite, React, and Tailwind CSS as the Frontend, currently it's just a static website without Backend
+This website was created with MERN Stack using Vite, React, and Tailwind CSS as a Frontend, currently it's just a static website without a Backend. <br />
 You could check for the website right here : https://umar-test01.web.app/
 
 
