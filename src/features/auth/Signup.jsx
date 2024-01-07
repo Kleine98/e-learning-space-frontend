@@ -3,14 +3,24 @@ import { useNavigate, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "../../app/api/axiosConfig";
 
-const Login = () => {
+const SignUp = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleLogin = async (e) => {
+
+  const handleSignUp = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post(
+      const sigup_response = await axios.post("/auth/signup", {
+        username,
+        email,
+        password,
+      });
+
+      console.log("User created:", sigup_response.data);
+      const login_response = await axios.post(
         "/auth",
         { username, password },
         {
@@ -19,15 +29,14 @@ const Login = () => {
       );
       console.log(username);
       // Handle successful login
-      console.log("Login successful:", response.data);
+      console.log("Login successful:", login_response.data);
       Cookies.set("username", username);
 
-      // Navigate to the home page with state
+      // Redirect to login after successful signup
       navigate("/");
     } catch (error) {
-      // Handle login error
       console.error(
-        "Login error:",
+        "Signup error:",
         error.response ? error.response.data : error.message
       );
     }
@@ -35,13 +44,11 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white-50">
-      <div className="max-w-xl w-full space-y-8 p-8 bg-white shadow-md rounded-md">
-        <div>
-          <h2 className="text-3xl font-extrabold text-center text-gray-900">
-            Login
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+      <div className="max-w-md w-full space-y-8 p-8 bg-white shadow-md rounded-md">
+        <h2 className="text-3xl font-extrabold text-center text-gray-900">
+          Sign Up
+        </h2>
+        <form className="mt-8 space-y-6" onSubmit={handleSignUp}>
           <div>
             <label
               htmlFor="username"
@@ -62,6 +69,24 @@ const Login = () => {
           </div>
           <div>
             <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+          </div>
+          <div>
+            <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
@@ -71,7 +96,7 @@ const Login = () => {
               id="password"
               name="password"
               type="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -83,18 +108,18 @@ const Login = () => {
               type="submit"
               className="bg-indigo-500 text-white p-2 w-full rounded-md hover:bg-indigo-600 focus:outline-none focus:ring focus:border-indigo-300"
             >
-              Login
+              Sign Up
             </button>
           </div>
         </form>
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
+            Already have an account?{" "}
             <Link
-              to="/signup"
+              to="/login"
               className="text-indigo-500 hover:underline font-semibold"
             >
-              Sign Up
+              Login
             </Link>
           </p>
         </div>
@@ -103,4 +128,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

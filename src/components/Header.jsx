@@ -1,8 +1,10 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import profile from "../img//store/profile.jpg";
+import Cookies from "js-cookie";
 
 const Header = () => {
+  const username = Cookies.get("username");
   const location = useLocation();
   const navigate = useNavigate();
   const [isIndexPage, setIsIndexPage] = useState(false);
@@ -43,15 +45,30 @@ const Header = () => {
               <Link to="/contact">
                 <li>Contact</li>
               </Link>
+              {username && (
+                <Link to="/profile">
+                  <div className="ml-4 text-white">{username}</div>
+                </Link>
+              )}
             </ul>
           </nav>
-          <Link to="/login">
-            <img
-              src={profile}
-              alt="Profile"
-              className="w-10 h-10 rounded-full ml-6 cursor-pointer transition duration-300 transform hover:scale-110"
-            />
-          </Link>
+          {username ? (
+            <Link to="/profile">
+              <img
+                src={profile}
+                alt="Profile"
+                className="w-10 h-10 rounded-full ml-6 cursor-pointer transition duration-300 transform hover:scale-110"
+              />
+            </Link>
+          ) : (
+            <Link to="/login">
+              <img
+                src={profile}
+                alt="Profile"
+                className="w-10 h-10 rounded-full ml-6 cursor-pointer transition duration-300 transform hover:scale-110"
+              />
+            </Link>
+          )}
         </div>
       </div>
     </header>
